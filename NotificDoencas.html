@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gerador Aleatório</title>
+  <meta charset="UTF-8">
+  <style>
+	button {
+		border: none;
+		color: white;
+		text-align: center;
+		font-size: 16px;
+		margin: 4px 2px;
+		transition-duration: 0.4s;
+		cursor: pointer;
+		background-color: white; 
+		color: black; 
+		border: 2px solid #4CAF50;
+	}
+
+	button:hover {
+		background-color: #4CAF50;
+		color: white;
+	}
+	textarea {
+		width: 100%;
+	}
+	ul {
+		font-size: 0.8em;
+	}
+	</style>
+</head>
+<body style="background-color:aliceblue">
+
+<h1>Aperte o botão "Gerar" para iniciar</h2>
+<p>Instruções: São sorteadas 4 doenças, com as espécies entre parênteses. Cada uma delas da seguinte classe:</p>
+<ul>
+	<li>Doença considerada erradicada ou nunca diagnosticada no país (e portanto de notificação compulsória imediata)</li>
+	<li>Doença de notificação obrigatória em até 24h quando houver suspeita</li>
+	<li>Doença de notificação obrigatória em até 24h quando o diagnóstico for confirmado</li>
+	<li>Doença de notificação mensal, quando houver(em) caso(s) positivo(s)</li>
+</ul>
+<p>Você pode usar as caixas de texto para escrever as classes que acha que cada doença pertence. Clique em "Mostrar Respostas" para adicionar as respostas corretas nas caixas. OBS.: a página não checa automaticamente os erros e acertos.</p>
+<p id="q0"></p>
+<textarea id="r0" rows="2"></textarea>
+<p id="q1"></p>
+<textarea id="r1" rows="2"></textarea>
+<p id="q2"></p>
+<textarea id="r2" rows="2"></textarea>
+<p id="q3"></p>
+<textarea id="r3" rows="2"></textarea>
+
+<br><br><br>
+<button onclick="responder()">Mostrar respostas</button>
+<button onclick="sortear()">Sortear novas doenças</button>
+<p><br><hr>Fonte: <a href="https://www.gov.br/agricultura/pt-br/assuntos/sanidade-animal-e-vegetal/saude-animal/arquivos-sisa/Listadedoencasanimaisdenotificaoobrigatoria.pdf">INSTRUÇÃO NORMATIVA Nº 50, DE 24 DE SETEMBRO DE 2013. </a></p>
+<p>Criado por Diego P. Caetano</p>
+<script>
+	var corretas = ["", "", "", ""];
+	function sortear(){
+		//Doenças não registradas, notificação de casos suspeitos, notificação de casos confirmados, notificação mensal de casos confirmados
+		var dnr = ["Brucelose (Brucella melitensis) (múltiplas espécies)", "Cowdriose  (múltiplas espécies)", "Doença hemorrágica epizoótica (múltiplas espécies)", "Encefalite japonesa (múltiplas espécies)", "Febre do Nilo Ocidental (múltiplas espécies)", "Febre do Vale do Rift (múltiplas espécies)", "Febre hemorrágica de Crimea-Congo (múltiplas espécies)", "Miíase (Chrysomya bezziana) (múltiplas espécies)", "Peste bovina (múltiplas espécies)", "Triquinelose (múltiplas espécies)", "Tularemia (múltiplas espécies)", "Infestação das abelhas melíferas pelos ácaros Tropilaelaps (abelhas)", "Infestação pelo pequeno escaravelho das colmeias (Aethina tumida) (abelhas)", "Hepatite viral do pato (aves)", "Influenza aviária (aves)", "Rinotraqueíte do peru (aves)", "Dermatose nodular contagiosa (bovinos e bubalinos)", "Pleuropneumonia contagiosa bovina (bovinos e bubalinos)", "Tripanosomose (transmitida por tsetsé) (bovinos e bubalinos)", "Varíola do camelo (camelídeos)", "Arterite viral equina (equídeos)", "Durina/sífilis (Trypanossoma equiperdum) (equídeos)", "Encefalomielite equina venezuelana (equídeos)", "Metrite contagiosa equina (equídeos)", "Peste equina (equídeos)", "Doença hemorrágica do coelho (lagomorfos)", "Aborto enzoótico das ovelhas (clamidiose) (ovinos e caprinos)", "Doença de Nairobi (ovinos e caprinos)", "Maedi-visna (ovinos e caprinos)", "Peste dos pequenos ruminantes(ovinos e caprinos)", "Pleuropneumonia contagiosa caprina (ovinos e caprinos)", "Varíola ovina e varíola caprina (ovinos e caprinos)", "Encefalomielite por vírus Nipah (suínos)", "Doença vesicular suína (suínos)", "Gastroenterite transmissível (suínos)", "Peste suína africana (suínos)", "Síndrome reprodutiva e respiratória suína (PRRS) (suínos)"];
+		var ncs = ["Antraz (carbúnculo hemático) (Múltiplas espécies)", "Doença de Aujeszky (Múltiplas espécies)", "Estomatite vesicular (Múltiplas espécies)", "Febre aftosa (Múltiplas espécies)", "Língua azul (Múltiplas espécies)", "Raiva (Múltiplas espécies)", "Loque americana das abelhas melíferas (abelhas)", "Loque europeia das abelhas melíferas (abelhas)", "Doença de Newcastle (aves)", "Laringotraqueíte infecciosa aviária (aves)", "Encefalopatia espongiforme bovina (bovinos e bubalinos)",  "Anemia infecciosa equina (equídeos)", "Encefalomielite equina do leste (equídeos)", "Encefalomielite equina do oeste (equídeos)", "Mormo (equídeos)", "Scrapie (ovinos e caprinos)", "Peste suína clássica (suínos)"];
+		var ncc = ["Brucelose (Brucella suis) (múltiplas espécies)", "Febre Q (múltiplas espécies)", "Paratuberculose (múltiplas espécies)", "Clamidiose aviária (aves)", "Mycoplasma (M. gallisepticum; M. melleagridis; M. synoviae) (aves)", "Salmonella (S. enteritidis; S. gallinarum; S. pullorum; S. typhimurium) (aves)", "Brucelose (Brucella abortus) (Bovinos e bubalinos)", "Teileriose (Bovinos e bubalinos)", "Tuberculose (Bovinos e bubalinos)", "Mixomatose (lagomorfos)", "Agalaxia contagiosa (ovinos e caprinos)"];
+		var nmc = ["Actinomicose (Múltiplas espécies)", "Botulismo (Clostridium botulinum) (Múltiplas espécies)", "Carbúnculo sintomático/manqueira (Clostridium chauvoei) (Múltiplas espécies)", "Cisticercose suína (Múltiplas espécies)", "Clostridioses (exceto C. chauvoei, C. botulinum, C. perfringens e C. tetani) (Múltiplas espécies)", "Coccidiose  (Múltiplas espécies)", "Disenteria vibriônica (Campilobacter jejuni) (Múltiplas espécies)", "Ectima contagioso  (Múltiplas espécies)", "Enterotoxemia (Clostridium perfringens) (Múltiplas espécies)", "Equinococose/hidatidose (Múltiplas espécies)", "Fasciolose hepática (Múltiplas espécies)", "Febre catarral maligna  (Múltiplas espécies)", "Filariose (Múltiplas espécies)", "Foot-rot/podridão dos cascos (Fusobacterium necrophorum)  (Múltiplas espécies)", "Leishmaniose (Múltiplas espécies)", "Leptospirose (Múltiplas espécies)", "Listeriose (Múltiplas espécies)", "Melioidose (Burkholderia pseudomallei)    (Múltiplas espécies)", "Miíase por Cochliomyia hominivoraxPasteureloses (exceto P. multocida) (Múltiplas espécies)", "Salmonelose intestinal (Múltiplas espécies)", "Tripanosomose ( T. vivax)  (Múltiplas espécies)", "Tétano (Clostridium tetani)    (Múltiplas espécies)", "Toxoplasmose (Múltiplas espécies)", "Surra (Trypanossoma evansi) (Múltiplas espécies)", "Acariose/acarapisose das abelhas melíferas         (abelhas)", "Cria giz (Ascosphaera apis) (abelhas)", "Nosemose (abelhas)", "Varrose (varroa/varroase)  (abelhas)", "Adenovirose (aves)", "Anemia infecciosa das galinhas (aves)", "Bronquite infecciosa aviária (aves)", "Coccidiose aviária (aves)", "Colibacilose (aves)", "Coriza aviária (aves)", "Doença de Marek (aves)", "Doença infecciosa da bursa/Doença de Gumboro (aves)", "EDS-76 (Síndrome da queda de postura) (aves)", "Encefalomielite aviária (aves)", "Epitelioma aviário/bouba/varíola aviária (aves)", "Espiroquetose aviária (Borrelia anserina) (aves)", "Leucose aviária (aves)", "Pasteurelose/cólera aviária (aves)", "Reovirose/artrite viral (aves)", "Reticuloendoteliose (aves)", "Salmoneloses (exceto S. gallinarum, S. pullorum, S. enteritidis e S. typhimurium) (aves)", "Tuberculose aviária (aves)", "Anaplasmose bovina (bovinos e bubalinos)", "Babesiose bovina (bovinos e bubalinos)", "Campilobacteriose genital bovina (Campilobacter fetus subesp. veneralis) (bovinos e bubalinos)", "Diarreia viral bovina (bovinos e bubalinos)", "Leucose enzoótica bovina  (bovinos e bubalinos)", "Rinotraqueíte infecciosa bovina/vulvovaginite pustular infecciosa (bovinos e bubalinos)", "Septicemia hemorrágica (Pasteurela multocida) (bovinos e bubalinos)", "Varíola bovina (bovinos e bubalinos)", "Tricomonose (bovinos e bubalinos)", "Adenite equina/papeira/garrotilho (equinos)", "Exantema genital equino (equinos)", "Gripe equina  (equinos)", "Linfangite ulcerativa (Corinebacterium pseudotuberculosis) (equinos)", "Piroplasmose equina     (equinos)", "Rinopneumonia equina  (equinos)", "Salmonelose (S. abortusequi) (equinos)", "Adenomatose pulmonar ovina (ovinos e caprinos)", "Artrite-encefalite caprina (ovinos e caprinos)", "Ceratoconjuntivite rickétsica (ovinos e caprinos)", "Epididimite ovina (Brucella ovis) (ovinos e caprinos)", "Linfadenite caseosa (ovinos e caprinos)", "Salmonelose (S. abortusovis) (ovinos e caprinos)", "Sarna ovina (ovinos e caprinos)", "Circovirose (suínos)", "Erisipela suína       (suínos)", "Influenza dos suínos  (suínos)", "Parvovirose suína (suínos)", "Pneumonia enzoótica (Mycoplasma hyopneumoniae) (suínos)", "Rinite atrófica (suínos)"];
+		
+		var alternativas = [dnr[Math.floor(Math.random()*dnr.length)], ncs[Math.floor(Math.random()*ncs.length)], ncc[Math.floor(Math.random()*ncc.length)], nmc[Math.floor(Math.random()*nmc.length)]];
+		var respostas = ["Doença considerada erradicada ou nunca diagnosticada no país (e portanto de notificação compulsória imediata)", "Doença de notificação obrigatória em até 24h quando houver suspeita", "Doença de notificação obrigatória em até 24h quando o diagnóstico for confirmado", "Doença de notificação mensal, quando houver(em) caso(s) positivo(s)"];
+		var ordem = [0, 1, 2, 3];
+		ordem.sort(() => Math.random() - 0.5);
+		
+		document.getElementById('q0').innerHTML = alternativas[ordem[0]];
+		document.getElementById('q1').innerHTML = alternativas[ordem[1]];
+		document.getElementById('q2').innerHTML = alternativas[ordem[2]];
+		document.getElementById('q3').innerHTML = alternativas[ordem[3]];
+		
+		document.getElementById('r0').value = "";
+		document.getElementById('r1').value = "";
+		document.getElementById('r2').value = "";
+		document.getElementById('r3').value = "";
+		
+		for (var i = 0; i < ordem.length; i++){
+			corretas[i] = respostas[ordem[i]];
+		}
+	}
+	
+	function responder(){
+		document.getElementById('r0').value = document.getElementById('r0').value + "\nResposta correta: " + corretas[0];
+		document.getElementById('r1').value = document.getElementById('r1').value + "\nResposta correta: " + corretas[1];
+		document.getElementById('r2').value = document.getElementById('r2').value + "\nResposta correta: " + corretas[2];
+		document.getElementById('r3').value = document.getElementById('r3').value + "\nResposta correta: " + corretas[3];
+	}
+	
+</script>
+
+</body>
+</html>
